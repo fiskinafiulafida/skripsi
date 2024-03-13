@@ -149,10 +149,13 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    @forelse ($periode as $periode)
+                    @forelse ($dataAktual as $dataAktual)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $periode->produksi_telur->jumlah}}</td>
+                        <td>{{ $dataAktual->jumlah}}</td>
+                        <td>{{ $penghitunganTelur}}</td>
+                        <td>{{ $s2}}</td>
+                        <td>{{ $penghitunganTelur}}</td>
                     </tr>
                     @empty
                     <div class="alert alert-danger">

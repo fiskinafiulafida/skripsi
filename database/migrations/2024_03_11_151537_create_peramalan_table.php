@@ -15,6 +15,15 @@ class CreatePeramalanTable extends Migration
     {
         Schema::create('peramalan', function (Blueprint $table) {
             $table->id();
+            $table->string('periode');
+            $table->integer('aktual')->nullable(0);
+            $table->double('s1')->nullable()->default(0);
+            $table->double('s2')->nullable()->default(0);
+            $table->double('a')->nullable()->default(0);
+            $table->double('b')->nullable()->default(0);
+            $table->double('f')->nullable()->default(0);
+            $table->double('xt_ft')->nullable()->default(0);
+            $table->double('pe')->nullable()->default(0);
             $table->timestamps();
         });
     }
