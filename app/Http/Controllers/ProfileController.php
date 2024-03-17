@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produksi;
 use Illuminate\Http\Request;
 use App\Models\Register;
 
@@ -14,8 +15,8 @@ class ProfileController extends Controller
 
     public function edit(Register $profile)
     {
-        $profile = Register::count();
-        return view('profile.edit', compact('profile'));
+        $produksi = Produksi::count();
+        return view('profile.edit', compact('profile', 'produksi'));
     }
 
     public function update(Request $request, Register $profile)
@@ -29,6 +30,6 @@ class ProfileController extends Controller
         $profile->email = $request->input('email');
         $profile->save();
 
-        return redirect('/profile')->with('success', 'Profile Updated');
+        return redirect('/profile')->with('success', 'Data Profile Telah Diupdate');
     }
 }

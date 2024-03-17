@@ -118,10 +118,12 @@
                                         <p class="text-muted">{{ Auth::user()->role }}</p>
                                     </div>
                                 </div>
-                                <a href="{{ route('profile.edit', Auth::user()->id) }}" class="fa fa-edit" style="font-size:20px"> Edit Profile User</a>
+                                <hr class="mt-0 mb-2">
+                                <div class="col-12 mb-3">
+                                    <a href="{{ route('profile.edit', Auth::user()->id) }}" class="fa fa-edit"> Edit Profile User</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+                                    <a href="{{ route('password.edit', Auth::user()->id) }}"> <i class="fa fa-key" aria-hidden="true"></i>Change Password </a>
+                                </div>
                                 <hr class="mt-0 mb-4">
-
-                                <a href="{{ route('password.edit', Auth::user()->id) }}"> <i class="fa fa-key" aria-hidden="true"></i>Change Password </a>
                             </div>
                         </div>
                     </div>
