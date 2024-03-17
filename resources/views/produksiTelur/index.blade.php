@@ -90,7 +90,15 @@
         <h6 class="m-0 font-weight-bold text-primary">Data Kandang Ayam</h6>
     </div>
     <div class="card-body">
-
+        <div class="col-xl-3 col-md-6 mb-4">
+            <label class="font-weight-bold">Filter Kandang Ayam</label><br>
+            <select name="namakandang_id" id="namakandang_id" class="btn btn-outline-primary @error('namakandang_id') is-invalid @enderror" value="{{ old('namakandang_id') }}" data-toggle="dropdown" style="width: 350px;">
+                <option value="">-- Pilih Kandang Ayam --</option>
+                @foreach ($kandangs as $kandang)
+                <option value="{{ $kandang->id }}">{{ $kandang->nama_kandang }}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="table-responsive">
             <a href="{{ route('produksiTelur.create') }}" class="btn btn-md btn-primary mb-3">Tambah Data Produksi Telur Ayam</a>
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

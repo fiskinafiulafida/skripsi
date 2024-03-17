@@ -85,17 +85,38 @@
 
 @section('row1')
 <div class="col-lg-4 mb-3">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <a href="user">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <h6> A. Silahkan Pilih Data Kandang Ayam</h6>
+                            <h6> B. Silahkan Pilih Nilai Alpha</h6>
+                            <h6> C. Silahkan Pilih Bulan & Tahun</h6>
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('row2')
+<div class="col-xl-3 col-md-6 mb-4">
     <label class="font-weight-bold">Kandang Ayam</label><br>
-    <select name="namakandang_id" id="namakandang_id" class="btn btn-outline-primary @error('namakandang_id') is-invalid @enderror" value="{{ old('namakandang_id') }}" data-toggle="dropdown" style="width:500px">
+    <select name="namakandang_id" id="namakandang_id" class="btn btn-outline-primary @error('namakandang_id') is-invalid @enderror" value="{{ old('namakandang_id') }}" data-toggle="dropdown" style="width: 350px;">
         <option value="">-- Pilih Kandang Ayam --</option>
         @foreach ($kandangs as $kandang)
         <option value="{{ $kandang->id }}">{{ $kandang->nama_kandang }}</option>
         @endforeach
     </select>
 </div>
-<div class="col-lg-4 mb-3">
+<div class="col-xl-3 col-md-6 mb-4">
     <label class="font-weight-bold">alpha</label><br>
-    <select name="namakandang_id" id="namakandang_id" class="btn btn-outline-primary @error('namakandang_id') is-invalid @enderror" value="{{ old('namakandang_id') }}" data-toggle="dropdown" style="width:500px">
+    <select name="namakandang_id" id="namakandang_id" class="btn btn-outline-primary @error('namakandang_id') is-invalid @enderror" value="{{ old('namakandang_id') }}" data-toggle="dropdown" style="width: 350px;">
         <option value="">-- Pilih alpha --</option>
         <option value="0.1">0.1</option>
         <option value="0.2">0.2</option>
@@ -108,14 +129,62 @@
         <option value="0.9">0.9</option>
     </select>
 </div>
-<div class="col-lg-4 mb-3">
-    <label class="font-weight-bold">Periode</label><br>
-    <input type="text" style="width:500px" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" placeholder="Masukkan Periode">
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="form-group">
+        <label class="font-weight-bold">Bulan</label><br>
+        <select name="bulan" id="bulan" class="btn btn-outline-primary @error('bulan') is-invalid @enderror" value="{{ old('bulan') }}" data-toggle="dropdown" style="width: 350px;">
+            <option value="">-- Pilih Bulan --</option>
+            <option value="Januari">Januari</option>
+            <option value="Februari">Februari</option>
+            <option value="Maret">Maret</option>
+            <option value="April">April</option>
+            <option value="Mei">Mei</option>
+            <option value="Juni">Juni</option>
+            <option value="Juli">Juli</option>
+            <option value="Agustus">Agustus</option>
+            <option value="September">September</option>
+            <option value="Oktober">Oktober</option>
+            <option value="November">November</option>
+            <option value="Desember">Desember</option>
+        </select>
+
+        @error('bulan')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+</div>
+<div class="col-xl-3 col-md-6 mb-4">
+    <label class="font-weight-bold">Tahun</label><br>
+    <select name="bulan" id="bulan" class="btn btn-outline-primary @error('bulan') is-invalid @enderror" value="{{ old('bulan') }}" data-toggle="dropdown" style="width: 350px;">
+        <option value="">-- Pilih Tahun --</option>
+        <option value="Januari">Januari</option>
+        <option value="Februari">Februari</option>
+        <option value="Maret">Maret</option>
+        <option value="April">April</option>
+        <option value="Mei">Mei</option>
+        <option value="Juni">Juni</option>
+        <option value="Juli">Juli</option>
+        <option value="Agustus">Agustus</option>
+        <option value="September">September</option>
+        <option value="Oktober">Oktober</option>
+        <option value="November">November</option>
+        <option value="Desember">Desember</option>
+    </select>
+
+    @error('bulan')
+    <div class="invalid-feedback">
+        {{ $message }}
+    </div>
+    @enderror
 </div>
 <div class="col-lg-3 mb-3 left">
     <button type="button" class="btn btn-success ">Proses Peramalan </button>
 </div>
 @endsection
+
+
 
 @section('container')
 <!-- DataTales Example -->
@@ -128,10 +197,11 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Periode</th>
-                        <th>Data Actual</th>
+                        <th>Bulan</th>
+                        <th>Tahun</th>
+                        <!-- <th>Data Actual</th>
                         <th>S't</th>
-                        <th>S''t</th>
+                        <th>S''t</th> -->
                         <th>at</th>
                         <th>bt</th>
                         <th>ft</th>
@@ -139,10 +209,11 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Periode</th>
-                        <th>Data Actual</th>
+                        <th>Bulan</th>
+                        <th>Tahun</th>
+                        <!-- <th>Data Actual</th>
                         <th>S't</th>
-                        <th>S''t</th>
+                        <th>S''t</th> -->
                         <th>at</th>
                         <th>bt</th>
                         <th>ft</th>
@@ -151,11 +222,9 @@
                 <tbody>
                     @forelse ($dataAktual as $dataAktual)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <!-- <td>{{ $loop->iteration }}</td>
                         <td>{{ $dataAktual->jumlah}}</td>
-                        <td>{{ $penghitunganTelur}}</td>
-                        <td>{{ $s2}}</td>
-                        <td>{{ $penghitunganTelur}}</td>
+                        <td>{{ $penghitunganTelur}}</td> -->
                     </tr>
                     @empty
                     <div class="alert alert-danger">

@@ -17,9 +17,14 @@ class PeramalanController extends Controller
         $dataAktual = DB::table('produksi_telur')->get();
 
         $penghitunganTelur = $this->hitung($dataAktual);
-        $s2 = $this->s2($dataAktual);
+        // $penghitungans1 = $this->hitungs1($dataAktual);
 
-        return view('peramalan.index', compact('kandangs', 'kandang', 'dataAktual', 'penghitunganTelur', 's2'));
+        // echo "<pre>";
+        // print_r($penghitungans1);
+        // echo "</pre>";
+
+        // return view('peramalan.index', compact('kandangs', 'kandang', 'dataAktual', 'penghitunganTelur', 'penghitungans1'));
+        return view('peramalan.index', compact('kandangs', 'kandang', 'dataAktual', 'penghitunganTelur'));
     }
 
     public function hitung($dataAktual)
@@ -33,13 +38,18 @@ class PeramalanController extends Controller
         return $jumlahSemuaTelur;
     }
 
-    public function s2($dataAktual)
-    {
-        $a = 0;
+    // public function hitungs1($dataAktual)
+    // {
+    //     $jumlahs1 = [];
+    //     $a = 0.5;
 
-        foreach ($dataAktual as $key => $produksi) {
-            $a * $dataAktual = $produksi->jumlah;
-        }
-        return $a;
-    }
+    //     foreach ($dataAktual as $key => $produksi) {
+    //         $j = ($produksi->jumlah * $a) + (1 - $a);
+    //         if (count($jumlahs1) > 1)
+    //             $j = ($produksi->jumlah * $a) + ((1 - $a) * ($jumlahs1[$key - 1]));
+    //         $jumlahs1[] = $j;
+    //     }
+
+    //     return $jumlahs1;
+    // }
 }

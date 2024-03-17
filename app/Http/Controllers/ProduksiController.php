@@ -11,8 +11,24 @@ class ProduksiController extends Controller
 {
     public function index()
     {
+        $kandangs = Kandang::all();
         $produksi = Produksi::latest()->with(['kandang', 'tahunProduksi'])->get();
-        return view('produksiTelur.index', compact('produksi'));
+        return view('produksiTelur.index', compact('produksi', 'kandangs'));
+    }
+
+    // fungsi untuk filter data kandang ayam
+    public function filter(Request $request)
+    {
+        $filterValue = $request->input('filter');
+
+        // Filter data based on $filterValue
+        if ($filterValue === 'all') {
+            $kandangs = Kandang::all();
+        } else {
+            $kandangs = Kandang::where('namakandang_id', $filterValue)->get();
+        }
+
+        return view('produksiTelur.index', compact('kandangs'));
     }
 
     public function create()
