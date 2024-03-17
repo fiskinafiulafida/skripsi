@@ -122,7 +122,7 @@
                         <th>Action</th>
                     </tr>
                 </tfoot>
-                <tbody>
+                <tbody id="tbody">
                     @forelse ($produksi as $produksi)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
@@ -149,4 +149,43 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('produksiTelur.index') }}",
+                data: function(d) {
+                    d.namakandang_id = $('#namakandang_id').val(),
+                        d.search = $('input[type="search"]').val()
+                }
+            },
+            columns: [{
+                    data: 'namakandang_id',
+                    name: 'namakandang_id'
+                },
+                {
+                    data: 'tahunProduksi_id',
+                    name: 'tahunProduksi_id'
+                },
+                {
+                    data: 'bulan',
+                    name: 'bulan'
+                },
+                {
+                    data: 'jumlah',
+                    name: 'jumlah'
+                },
+            ]
+        });
+
+        $('#namakandang_id').change(function() {
+            table.draw();
+        });
+
+    });
+</script>
 @endsection

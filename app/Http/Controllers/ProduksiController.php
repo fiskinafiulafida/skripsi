@@ -6,30 +6,60 @@ use App\Models\Produksi;
 use App\Models\Kandang;
 use App\Models\TahunProduksi;
 use Illuminate\Http\Request;
+use DataTables;
 
 class ProduksiController extends Controller
 {
-    public function index()
+    // public function index(Request $request)
+    // {
+    //     $query = Kandang::query();
+    //     $produksi = Produksi::latest()->with(['kandang', 'tahunProduksi'])->get();
+
+    //     // filter data kandang ayam
+    //     if ($request->ajax()) {
+    //         $kandangs = $query->where(['namakandang_id' => $request->namakandang_id])->get();
+    //         return response()->json(['produksiTelur' => $kandangs]);
+    //     }
+
+    //     $kandangs = $query->get();
+
+    //     return view('produksiTelur.index', compact('produksi', 'kandangs'));
+    // }
+
+    public function index(Request $request)
     {
+
         $kandangs = Kandang::all();
         $produksi = Produksi::latest()->with(['kandang', 'tahunProduksi'])->get();
-        return view('produksiTelur.index', compact('produksi', 'kandangs'));
-    }
-
-    // fungsi untuk filter data kandang ayam
-    public function filter(Request $request)
-    {
-        $filterValue = $request->input('filter');
-
-        // Filter data based on $filterValue
-        if ($filterValue === 'all') {
-            $kandangs = Kandang::all();
-        } else {
-            $kandangs = Kandang::where('namakandang_id', $filterValue)->get();
+        if ($request->ajax()) {
+            $data = Produksi::select('*');
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('namakandang_id', function ($row) {
+                    if ($row->namakandang_id) {
+                        return 'Kandang 1';
+                    } else {
+                        return 'Kandang 2';
+                    }
+                })
+                ->filter(function ($instance) use ($request) {
+                    if ($request->get('namakandang_id') == '0' || $request->get('namakandang_id') == '1') {
+                        $instance->where('namakandang_id', $request->get('namakandang_id'));
+                    }
+                    if (!empty($request->get('search'))) {
+                        $instance->where(function ($w) use ($request) {
+                            $search = $request->get('search');
+                            $w->orWhere('bulan', 'LIKE', "%$search%")
+                                ->orWhere('jumlah', 'LIKE', "%$search%");
+                        });
+                    }
+                })
+                ->rawColumns(['namakandang_id'])
+                ->make(true);
         }
-
-        return view('produksiTelur.index', compact('kandangs'));
+        return view('produksiTelur.index', compact('kandangs', 'produksi'));
     }
+
 
     public function create()
     {

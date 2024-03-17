@@ -174,6 +174,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        // untuk filter data kandang ayam
+        Yajra\DataTables\DataTablesServiceProvider::class,
     ],
 
     /*
@@ -229,6 +231,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        // untuk filter data kandang ayam
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ],
 
 ];
