@@ -3,7 +3,7 @@
 @section('title', 'Data User')
 
 @section('pageHeading')
-<h1 class="h3 mb-0 text-gray-800">Data User</h1>
+<h1 class="h3 mb-0 text-gray-800">Create Data User</h1>
 @endsection
 
 @section('sidebar')
@@ -91,58 +91,61 @@
 @endsection
 
 @section('container')
-<!-- DataTales Example -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Data User</h6>
-    </div>
-    <div class="card-body">
+<div class="col-lg-12">
+    <div class="card mb-4 py-3 border-left-primary">
+        <div class="card-body">
+            <form action="{{ route('user.store') }}" method="POST" class="register-form" id="register-form">
+                @csrf
+                <div class="form-group">
+                    <label class="font-weight-bold">Name</label>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Masukkan Nama">
 
-        <div class="table-responsive">
-            <a href="{{ route('user.create') }}" class="btn btn-md btn-primary mb-3">Tambah Data User</a>
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role User</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th>Id</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role User</th>
-                        <th>Action</th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    @forelse ($user as $user)
-                    <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->role }}</td>
-                        <td class="text-center">
-                            <form onsubmit="return confirm('Apakah Anda Yakin Akan Menghapus Akun Anda ?');" action="{{ route('user.destroy', $user->id) }}" method="POST">
-                                <a href="{{ route('user.edit', $user->id) }}" class="btn btn-info btn-circle btn-lg"><i class="fas fa-info-circle"></i></a>
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-circle btn-lg"> <i class="fas fa-trash"></i></button>
-                                </a>
-                            </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <div class="alert alert-danger">
-                        Data User belum Tersedia.
+                    <!-- error message untuk name -->
+                    @error('name')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
                     </div>
-                    @endforelse
-                </tbody>
-            </table>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Email</label>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Masukkan email">
+
+                    <!-- error message untuk email -->
+                    @error('email')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Password</label>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" placeholder="Masukkan password">
+
+                    <!-- error message untuk password -->
+                    @error('password')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Role User</label><br>
+
+                    <select name="role" id="role" class="btn btn-light @error('role') is-invalid @enderror" value="{{ old('role') }}" data-toggle="dropdown" style="width:1420px">
+                        <option selected></option>
+                        <option value="admin">Admin</option>
+                        <option value="owner">Owner</option>
+                    </select>
+                    @error('role')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <button type="submit" class="btn btn-md btn-success">SIMPAN</button>
+            </form>
         </div>
     </div>
 </div>
