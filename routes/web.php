@@ -58,6 +58,12 @@ Route::resource('/tahunProduksiAdmin', TahunProduksiController::class)->middlewa
 
 // peramalan produksi telur ayam
 Route::resource('/peramalanAdmin', PeramalanController::class)->middleware('auth', 'checkrole:admin');
+Route::post('/getData', [PeramalanController::class, 'getDataform']);
+Route::post('/getData', [PeramalanController::class, 'forecast']);
+Route::post('/clear-records', [PeramalanController::class, 'destroy']);
+Route::get('/result-view', [PeramalanController::class, 'resultData']);
+Route::post('/getResult', [PeramalanController::class, 'generateForecast']);
+Route::post('/clear-records2', [PeramalanController::class, 'destroy2']);
 
 // Halaman Owner
 Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {

@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'Generate Peramalan Produksi Telur Ayam')
+@section('title', 'Peramalan Produksi Telur Ayam')
 
 @section('pageHeading')
-<h1 class="h3 mb-0 text-gray-800">Generate Peramalan Produksi Telur Ayam</h1>
+<h1 class="h3 mb-0 text-gray-800">Hasil Peramalan Produksi Telur Ayam</h1>
 @endsection
 
 @section('sidebar')
@@ -97,8 +97,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            <h6> A. Silahkan Anda Memilih Data Kandang Ayam</h6>
-                            <h6> B. Silahkan Anda Memilih Nilai Alpha</h6>
+                            <h6> Masukkan Jumlah Bulan yang Akan di Ramalkan</h6>
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
@@ -110,77 +109,23 @@
 @endsection
 
 @section('row2')
-<form action="/getData" method="post" class="d-flex flex-wrap ml-4">
+<form action="/getResult" method="post" class="d-flex flex-wrap ml-4">
     @csrf
-    <div class="col-md-5 mb-2">
-        <label class="font-weight-bold" for="selectKandang">Pilih Kandang Ayam</label>
-        <select name="namakandang_id" id="selectKandang" class="form-control @error('namakandang_id') is-invalid @enderror">
-            <option value="{{ old('namakandang_id') }}"> Kandang Ayam </option>
-            @foreach ($kandangs as $kandang)
-            <option value="{{ $kandang->id }}">{{ $kandang->nama_kandang }}</option>
-            @endforeach
-        </select>
-        @error('namakandang_id')
-        <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-    <div class="col-md-3 mb-2">
-        <label class="font-weight-bold" for="selectAlpha">Pilih Alpha</label>
-        <select name="alpha" id="selectAlpha" class="form-control @error('alpha') is-invalid @enderror">
-            <option value="{{ old('alpha') }}"> alpha </option>
-            <option value="0.1">0.1</option>
-            <option value="0.2">0.2</option>
-            <option value="0.3">0.3</option>
-            <option value="0.4">0.4</option>
-            <option value="0.5">0.5</option>
-            <option value="0.6">0.6</option>
-            <option value="0.7">0.7</option>
-            <option value="0.8">0.8</option>
-            <option value="0.9">0.9</option>
-        </select>
-        @error('alpha')
-        <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-    <!-- <div class="col-md-3 mb-2">
-        <label class="font-weight-bold" for="selectBulan">Pilih Bulan</label>
-        <select name="bulan" id="selectBulan" class="form-control @error('bulan') is-invalid @enderror">
-            <option value="">-- Pilih Bulan --</option>
-            <option value="Januari">Januari</option>
-            <option value="Februari">Februari</option>
-            <option value="Maret">Maret</option>
-            <option value="April">April</option>
-            <option value="Mei">Mei</option>
-            <option value="Juni">Juni</option>
-            <option value="Juli">Juli</option>
-            <option value="Agustus">Agustus</option>
-            <option value="September">September</option>
-            <option value="Oktober">Oktober</option>
-            <option value="November">November</option>
-            <option value="Desember">Desember</option>
-        </select>
+    <div class="col-md-7 mb-2">
+        <label class="font-weight-bold" for="selectBulan">Inputkan jumlah bulan</label>
+        <input type="number" name="bulan" class="form-control" style="width: 200px;">
         @error('bulan')
-        <div class="invalid-feedback">{{ $message }}</div>
+        <div class=" invalid-feedback">{{ $message }}
+        </div>
         @enderror
     </div>
-    <div class="col-md-3 mb-2">
-        <label class="font-weight-bold" for="selectTahun">Pilih Tahun</label>
-        <select name="tahun" id="selectTahun" class="form-control @error('tahun') is-invalid @enderror">
-            <option value="">-- Pilih Tahun --</option>
-            @foreach ($tahun as $item)
-            <option value="{{ $item->tahunProduksi }}">{{ $item->tahunProduksi }}</option>
-            @endforeach
-        </select>
-        @error('tahun')
-        <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div> -->
-    <div class="col-lg-3 mb-2 mt-4">
+    <div class="col-lg-3 mb-4 mt-4">
         <button type="submit" class="btn btn-success">Proses Peramalan</button>
     </div>
 </form>
 
-<form action="/clear-records" method="post" class="d-flex flex-wrap">
+<!-- untuk menghapus data yang awal sebelumnya -->
+<form action="/clear-records2" method="post" class="d-flex flex-wrap">
     @csrf
     <div class="col-lg-3 mb-2 mt-4">
         <button type="submit" class="btn btn-danger">Clear Records</button>
@@ -189,13 +134,11 @@
 
 @endsection
 
-
-
 @section('container')
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Data Peramalan Produksi Telur Ayam</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Hasil Data Peramalan Produksi Telur Ayam</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -203,36 +146,24 @@
                 <thead>
                     <tr>
                         <th>Periode</th>
-                        <th>Data Aktual</th>
                         <th>at</th>
                         <th>bt</th>
+                        <th>m</th>
                         <th>ft</th>
                     </tr>
                 </thead>
                 <tfoot>
-                    @foreach ($peramalan as $item)
+                    @foreach ($data as $item)
                     <tr>
                         <th>{{ $item->periode }}</th>
-                        <th>{{ $item->aktual }}</th>
                         <th>{{ $item->a }}</th>
                         <th>{{ $item->b }}</th>
-                        <th>{{ $item->f }}</th>
+                        <th>{{ $item->m }}</th>
+                        <th>{{ $item->ft }}</th>
                     </tr>
                     @endforeach
                 </tfoot>
-                <tbody>
-                    @forelse ($dataAktual as $dataAktual)
-                    <tr>
-                        <!-- <td>{{ $loop->iteration }}</td>
-                        <td>{{ $dataAktual->jumlah}}</td>
-                        <td>{{ $penghitunganTelur}}</td> -->
-                    </tr>
-                    @empty
-                    <div class="alert alert-danger">
-                        Data Peramalan belum Tersedia.
-                    </div>
-                    @endforelse
-                </tbody>
+
             </table>
         </div>
     </div>
