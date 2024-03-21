@@ -63,15 +63,21 @@
     <li class="nav-item active">
         <a class="nav-link" href="/peramalanAdmin">
             <i class="fa fa-area-chart"></i>
-            <span>Peramalan</span></a>
+            <span>Generate Peramalan</span></a>
     </li>
 
-    <!-- Nav Item - Laporan -->
+    <li class="nav-item active">
+        <a class="nav-link" href="/result-view">
+            <i class="fa fa-book"></i>
+            <span>Hasil Peramalan</span></a>
+    </li>
+
+    <!-- Nav Item - Laporan
     <li class="nav-item active">
         <a class="nav-link" href="/laporanAdmin">
             <i class="fas fa-book"></i>
             <span>Laporan</span></a>
-    </li>
+    </li> -->
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
