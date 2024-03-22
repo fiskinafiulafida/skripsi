@@ -9,7 +9,7 @@
         <div class="signin-content">
             <div class="signin-image">
                 <figure><img src="{{ asset('LoginRegister/images/Log.png')}}" alt="sing up image"></figure>
-                <!-- <a href="/register" class="signup-image-link">Create an account</a> -->
+                <a href="/register" class="signup-image-link">Create an account</a>
             </div>
 
             <div class="signin-form">
