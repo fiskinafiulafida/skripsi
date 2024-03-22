@@ -98,7 +98,7 @@
     <div class="card-body">
 
         <div class="table-responsive">
-            <a href="{{ route('user.create') }}" class="btn btn-md btn-primary mb-3">Tambah Data User</a>
+            <!-- <a href="{{ route('user.create') }}" class="btn btn-md btn-primary mb-3">Tambah Data User</a> -->
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
