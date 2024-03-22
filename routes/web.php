@@ -65,14 +65,16 @@ Route::get('/result-view', [PeramalanController::class, 'resultData']);
 Route::post('/getResult', [PeramalanController::class, 'generateForecast']);
 Route::post('/clear-records2', [PeramalanController::class, 'destroy2']);
 
-// Halaman Owner
-Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
-    Route::get('/dashboardowner', [OwnerController::class, 'index']);
-});
-
 // Halaman Profile User
 Route::resource('/profile', ProfileController::class)->middleware('auth', 'checkrole:admin,owner');
 
 // Password
 Route::resource('/password', PasswordController::class)->middleware('auth');
 Route::post('/change-password', [App\Http\Controllers\PasswordController::class, 'update'])->name('update-password')->middleware('auth');
+
+// Route untuk halaman owner
+// Halaman dashboard owner
+Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
+    Route::get('/dashboardowner', [OwnerController::class, 'index']);
+});
+Route::get('produksi/tampil', [ProduksiController::class, 'produksitampil'])->name('produksitampil')->middleware('auth', 'owner');

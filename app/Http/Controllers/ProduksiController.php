@@ -60,6 +60,14 @@ class ProduksiController extends Controller
         return view('produksiTelur.index', compact('kandangs', 'produksi'));
     }
 
+    // view untuk owner
+    public function produksitampil()
+    {
+        $produksi = Produksi::latest()->with(['kandang', 'tahunProduksi'])->get();
+
+        return view('produksiTelur.index', compact('produksi', 'kandangs'));
+    }
+
 
     public function create()
     {
