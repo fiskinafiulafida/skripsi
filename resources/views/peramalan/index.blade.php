@@ -97,8 +97,9 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            <h6> A. Silahkan Anda Memilih Data Kandang Ayam</h6>
-                            <h6> B. Silahkan Anda Memilih Nilai Alpha</h6>
+                            <h6> A. Clear Records Terlebih dahulu sebelum melakukan perhitungan</h6>
+                            <h6> B. Pilih Data Kandang Ayam</h6>
+                            <h6> C. Pilih Nilai Alpha</h6>
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
@@ -142,39 +143,6 @@
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-    <!-- <div class="col-md-3 mb-2">
-        <label class="font-weight-bold" for="selectBulan">Pilih Bulan</label>
-        <select name="bulan" id="selectBulan" class="form-control @error('bulan') is-invalid @enderror">
-            <option value="">-- Pilih Bulan --</option>
-            <option value="Januari">Januari</option>
-            <option value="Februari">Februari</option>
-            <option value="Maret">Maret</option>
-            <option value="April">April</option>
-            <option value="Mei">Mei</option>
-            <option value="Juni">Juni</option>
-            <option value="Juli">Juli</option>
-            <option value="Agustus">Agustus</option>
-            <option value="September">September</option>
-            <option value="Oktober">Oktober</option>
-            <option value="November">November</option>
-            <option value="Desember">Desember</option>
-        </select>
-        @error('bulan')
-        <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-    <div class="col-md-3 mb-2">
-        <label class="font-weight-bold" for="selectTahun">Pilih Tahun</label>
-        <select name="tahun" id="selectTahun" class="form-control @error('tahun') is-invalid @enderror">
-            <option value="">-- Pilih Tahun --</option>
-            @foreach ($tahun as $item)
-            <option value="{{ $item->tahunProduksi }}">{{ $item->tahunProduksi }}</option>
-            @endforeach
-        </select>
-        @error('tahun')
-        <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div> -->
     <div class="col-lg-3 mb-2 mt-4">
         <button type="submit" class="btn btn-success">Proses Peramalan</button>
     </div>
@@ -214,9 +182,9 @@
                     <tr>
                         <th>{{ $item->periode }}</th>
                         <th>{{ $item->aktual }}</th>
-                        <th>{{ $item->a }}</th>
-                        <th>{{ $item->b }}</th>
-                        <th>{{ $item->f }}</th>
+                        <th>{{ round($item->a) }}</th>
+                        <th>{{round($item->b) }}</th>
+                        <th>{{ round($item->f) }}</th>
                     </tr>
                     @endforeach
                 </tfoot>
