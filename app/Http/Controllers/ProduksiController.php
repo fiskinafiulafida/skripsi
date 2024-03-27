@@ -10,22 +10,6 @@ use DataTables;
 
 class ProduksiController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $query = Kandang::query();
-    //     $produksi = Produksi::latest()->with(['kandang', 'tahunProduksi'])->get();
-
-    //     // filter data kandang ayam
-    //     if ($request->ajax()) {
-    //         $kandangs = $query->where(['namakandang_id' => $request->namakandang_id])->get();
-    //         return response()->json(['produksiTelur' => $kandangs]);
-    //     }
-
-    //     $kandangs = $query->get();
-
-    //     return view('produksiTelur.index', compact('produksi', 'kandangs'));
-    // }
-
     public function index(Request $request)
     {
 
@@ -60,10 +44,14 @@ class ProduksiController extends Controller
         return view('produksiTelur.index', compact('kandangs', 'produksi'));
     }
 
-    // view untuk owner
-    public function produksitampil()
+    public function filterKandang(Request $request)
     {
-        $produksi = Produksi::latest()->with(['kandang', 'tahunProduksi'])->get();
+
+        $kandangs = Kandang::all();
+
+        $kandang = $request->input('namakandang_id');
+
+        $produksi = Produksi::where('namakandang_id', $kandang)->get();
 
         return view('produksiTelur.index', compact('produksi', 'kandangs'));
     }
