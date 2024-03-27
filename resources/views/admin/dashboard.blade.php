@@ -161,23 +161,23 @@
     <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Produksi Telur Ayam</h6>
-            <div class="dropdown no-arrow">
-                <div class="col-xl-3 col-md-3 mb-9">
-                    <select name="tahunProduksi_id" id="tahunProduksi_id" class="btn btn-light @error('tahunProduksi_id') is-invalid @enderror" value="{{ old('tahunProduksi_id') }}" data-toggle="dropdown" style="width:650px">
-                        <option value="">-- Pilih Kandang Ayam --</option>
-
-                    </select>
-                </div>
-            </div>
-            <div class="dropdown no-arrow">
-                <div class="col-xl-10 mb-9">
-                    <select name="tahunProduksi_id" id="tahunProduksi_id" class="btn btn-light @error('tahunProduksi_id') is-invalid @enderror" value="{{ old('tahunProduksi_id') }}" data-toggle="dropdown" style="width:650px">
-                        <option value="">-- Pilih Tahun Produksi --</option>
-
-                    </select>
-                </div>
-            </div>
+            <h6 class="m-0 font-weight-bold text-primary">Grafik Hasil Produksi Telur Ayam</h6>
+            <form action="/filterGrafik" method="post" id="formFilter">
+                @csrf
+                <select name="tahun" id="tahun" class="btn btn-outline-primary @error('tahun') is-invalid @enderror" value="{{ old('namakandang_id') }}" data-toggle="dropdown" style="width: 350px;">
+                    <option value="">-- Pilih Tahun Produksi --</option>
+                    @foreach ($tahunProduksi as $item)
+                    <option value={{ $item->id }}>{{ $item->tahunProduksi }}</option>
+                    @endforeach
+                </select>
+                <select name="kandang" id="kandang" class="btn btn-outline-primary @error('kandang') is-invalid @enderror" value="{{ old('namakandang_id') }}" data-toggle="dropdown" style="width: 350px;">
+                    <option value="">-- Pilih Kandang Ayam --</option>
+                    @foreach ($kandangAyam as $item)
+                    <option value={{ $item->id }}>{{ $item->nama_kandang }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-success">Filter data</button>
+            </form>
         </div>
 
         <!-- Card Body -->

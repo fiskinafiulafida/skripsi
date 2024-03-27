@@ -44,11 +44,12 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
     Route::get('/dashboardAdmin', [AdminController::class, 'index']);
 });
 
-// data kandang ayam 
+// data kandang ayam
 Route::resource('/kandangAdmin', KandangController::class)->middleware('auth', 'checkrole:admin');
 
 // data produksi telur ayam
 Route::resource('/produksiTelur', ProduksiController::class)->middleware('auth', 'checkrole:admin');
+Route::post('/filterKandang', [ProduksiController::class, 'filterKandang']);;
 
 // data user
 Route::resource('/user', UserController::class)->middleware('auth', 'checkrole:admin');
@@ -58,12 +59,16 @@ Route::resource('/tahunProduksiAdmin', TahunProduksiController::class)->middlewa
 
 // peramalan produksi telur ayam
 Route::resource('/peramalanAdmin', PeramalanController::class)->middleware('auth', 'checkrole:admin');
-Route::post('/getData', [PeramalanController::class, 'getDataform']);
 Route::post('/getData', [PeramalanController::class, 'forecast']);
 Route::post('/clear-records', [PeramalanController::class, 'destroy']);
 Route::get('/result-view', [PeramalanController::class, 'resultData']);
 Route::post('/getResult', [PeramalanController::class, 'generateForecast']);
-Route::post('/clear-records2', [PeramalanController::class, 'destroy2']);
+Route::post('/clearResult', [PeramalanController::class, 'destroyResult']);
+
+// Halaman Owner
+Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
+    Route::get('/dashboardowner', [OwnerController::class, 'index']);
+});
 
 // Halaman Profile User
 Route::resource('/profile', ProfileController::class)->middleware('auth', 'checkrole:admin,owner');
@@ -72,9 +77,5 @@ Route::resource('/profile', ProfileController::class)->middleware('auth', 'check
 Route::resource('/password', PasswordController::class)->middleware('auth');
 Route::post('/change-password', [App\Http\Controllers\PasswordController::class, 'update'])->name('update-password')->middleware('auth');
 
-// Route untuk halaman owner
-// Halaman dashboard owner
-Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
-    Route::get('/dashboardowner', [OwnerController::class, 'index']);
-});
-Route::get('produksi/tampil', [ProduksiController::class, 'produksitampil'])->name('produksitampil')->middleware('auth', 'owner');
+// filter halaman dashboard
+Route::get('/filterGrafik', [AdminController::class, 'getChartData']);
