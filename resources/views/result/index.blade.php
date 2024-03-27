@@ -97,7 +97,9 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            <h6> Masukkan Jumlah Bulan yang Akan di Ramalkan</h6>
+                            <h6> 1. Clear Record Terlebih Dahulu Sebelum Melakukan Peramalan</h6>
+                            <h6> 2. Masukkan Jumlah Bulan yang Akan di Ramalkan</h6>
+                            <h6> 3. Klik Proses Peramalan</h6>
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                     </div>
@@ -125,7 +127,7 @@
 </form>
 
 <!-- untuk menghapus data yang awal sebelumnya -->
-<form action="/clear-records2" method="post" class="d-flex flex-wrap">
+<form action="/clearResult" method="post" class="d-flex flex-wrap ml-4">
     @csrf
     <div class="col-lg-3 mb-2 mt-4">
         <button type="submit" class="btn btn-danger">Clear Records</button>
@@ -156,14 +158,13 @@
                     @foreach ($data as $item)
                     <tr>
                         <th>{{ $item->periode }}</th>
-                        <th>{{ $item->a }}</th>
-                        <th>{{ $item->b }}</th>
+                        <th>{{ round($item->a)}}</th>
+                        <th>{{ round($item->b)}}</th>
                         <th>{{ $item->m }}</th>
-                        <th>{{ $item->ft }}</th>
+                        <th>{{ round($item->ft)}}</th>
                     </tr>
                     @endforeach
                 </tfoot>
-
             </table>
         </div>
     </div>

@@ -22,14 +22,6 @@ class PeramalanController extends Controller
         $tahun = TahunProduksi::all();
         $peramalan = Peramalan::all();
         $penghitunganTelur = $this->hitung($dataAktual);
-        // $penghitungans1 = $this->hitungs1($dataAktual);
-
-        // echo "<pre>";
-        // print_r($penghitungans1);
-        // echo "</pre>";
-
-
-        // return view('peramalan.index', compact('kandangs', 'kandang', 'dataAktual', 'penghitunganTelur', 'penghitungans1'));
         return view('peramalan.index', compact('kandangs', 'kandang', 'tahun', 'dataAktual', 'penghitunganTelur', 'peramalan'));
     }
 
@@ -139,23 +131,6 @@ class PeramalanController extends Controller
         return redirect('/peramalanAdmin')->withInput();
     }
 
-
-    // public function hitungs1($dataAktual)
-    // {
-    //     $jumlahs1 = [];
-    //     $a = 0.5;
-
-    //     foreach ($dataAktual as $key => $produksi) {
-    //         $j = ($produksi->jumlah * $a) + (1 - $a);
-    //         if (count($jumlahs1) > 1)
-    //             $j = ($produksi->jumlah * $a) + ((1 - $a) * ($jumlahs1[$key - 1]));
-    //         $jumlahs1[] = $j;
-    //     }
-
-    //     return $jumlahs1;
-    // }
-
-
     public function resultData()
     {
         $data = Result::all();
@@ -208,14 +183,13 @@ class PeramalanController extends Controller
         return redirect('/peramalanAdmin');
     }
 
-    public function destroy2()
+    public function destroyResult()
     {
-
-        if (Peramalan::count() <= 0) {
-            return redirect('/result-view')->with('toast_info', 'Records sudah kosong!');;
+        if (Result::count() <= 0) {
+            return redirect('/result-view')->with('toast_info', 'Records sudah kosong!');
         }
 
-        Peramalan::truncate();
+        Result::truncate();
 
         return redirect('/result-view');
     }
