@@ -79,3 +79,6 @@ Route::post('/change-password', [App\Http\Controllers\PasswordController::class,
 
 // filter halaman dashboard
 Route::get('/filterGrafik', [AdminController::class, 'getChartData']);
+
+// filter halaman owner
+Route::get('/filterGrafikowner', [OwnerController::class, 'getChartData']);

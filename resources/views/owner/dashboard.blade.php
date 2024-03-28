@@ -33,21 +33,14 @@
 
     <!-- Nav Item - Produksi Telur -->
     <li class="nav-item active">
-        <a class="nav-link" href="/produksiTelur">
+        <a class="nav-link" href="/produksiTelurowner">
             <i class="fas fa-chart-line"></i>
             <span>Produksi Telur</span></a>
     </li>
 
-    <!-- Nav Item - Peramalan -->
-    <li class="nav-item active">
-        <a class="nav-link" href="/">
-            <i class="fa fa-area-chart"></i>
-            <span>Generate Peramalan</span></a>
-    </li>
-
     <!-- Nav Item - Laporan -->
     <li class="nav-item active">
-        <a class="nav-link" href="/">
+        <a class="nav-link" href="/hasilPeramalanowner">
             <i class="fas fa-book"></i>
             <span>Hasil Peramalan</span></a>
     </li>
@@ -108,21 +101,25 @@
 <!-- Area Chart -->
 <div class="col-lg-12 mb-4">
     <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
+        <!-- Card Header - Dropdown --><!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Produksi Telur Ayam</h6>
-            <div class="dropdown no-arrow">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                    <div class="dropdown-header">Dropdown Header:</div>
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </div>
+            <h6 class="m-0 font-weight-bold text-primary">Grafik Hasil Produksi Telur Ayam</h6>
+            <form action="/filterGrafikowner" method="post" id="formFilter">
+                @csrf
+                <select name="tahun" id="tahun" class="btn btn-outline-primary @error('tahun') is-invalid @enderror" value="{{ old('namakandang_id') }}" data-toggle="dropdown" style="width: 350px;">
+                    <option value="">-- Pilih Tahun Produksi --</option>
+                    @foreach ($tahunProduksi as $item)
+                    <option value={{ $item->id }}>{{ $item->tahunProduksi }}</option>
+                    @endforeach
+                </select>
+                <select name="kandang" id="kandang" class="btn btn-outline-primary @error('kandang') is-invalid @enderror" value="{{ old('namakandang_id') }}" data-toggle="dropdown" style="width: 350px;">
+                    <option value="">-- Pilih Kandang Ayam --</option>
+                    @foreach ($kandangAyam as $item)
+                    <option value={{ $item->id }}>{{ $item->nama_kandang }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-success">Filter data</button>
+            </form>
         </div>
         <!-- Card Body -->
         <div class="card-body">
