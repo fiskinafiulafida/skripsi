@@ -17,16 +17,14 @@ class RegisterController extends Controller
             'name'                  => 'required|max:255',
             'email'                 => 'required',
             'password'              => 'required|min:3|max:255',
-            'role'                  => 'required|in:admin,owner,pegawai',
         ]);
 
         Register::create([
             'name'                  => $request->name,
             'email'                 => $request->email,
             'password'              => bcrypt($request->password),
-            'role'                  => $request->role,
         ]);
 
-        return redirect('/')->with('Pesan', 'Register Anda Berhasil');
+        return redirect('/')->with('toast_success', 'Register Anda Berhasil');
     }
 }

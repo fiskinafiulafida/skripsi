@@ -38,7 +38,7 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <i class="zmdi zmdi-accounts"></i> Role User
                         <select name="role" id="role" class="form-select form-select-sm @error('role') is-invalid @enderror" aria-label=".form-select-sm example">
                             <option selected></option>
@@ -51,7 +51,7 @@
                             {{ $message }}
                         </div>
                         @enderror
-                    </div>
+                    </div> -->
                     <!-- </div> -->
                     <div class="form-group form-button">
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
