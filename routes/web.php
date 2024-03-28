@@ -82,3 +82,6 @@ Route::get('/filterGrafik', [AdminController::class, 'getChartData']);
 
 // filter halaman owner
 Route::get('/filterGrafikowner', [OwnerController::class, 'getChartData']);
+// produksi telur owner
+Route::get('produksiTelurowner', [ProduksiController::class, 'getProduksiOwner']);
+Route::post('/filterKandangOWner', [ProduksiController::class, 'filterKandangowner']);;

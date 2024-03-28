@@ -137,4 +137,20 @@ class ProduksiController extends Controller
             return redirect('produksiTelur')->with('toast_error ', 'Data Gagal Dihapus');
         }
     }
+
+    // untuk halaman owner 
+    public function getProduksiOwner()
+    {
+        $kandangs = Kandang::all();
+        $produksi = Produksi::get();
+        return view('owner.produksiTelur', compact('produksi', 'kandangs'));
+    }
+
+    public function filterKandangOWner(Request $request)
+    {
+        $kandangs = Kandang::all();
+        $kandang = $request->input('namakandang_id');
+        $produksi = Produksi::where('namakandang_id', $kandang)->get();
+        return view('owner.produksiTelur', compact('produksi', 'kandangs'));
+    }
 }
