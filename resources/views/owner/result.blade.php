@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'Peramalan Produksi Telur Ayam')
+@section('title', 'Hasil Peramalan Hasil Produksu Telur Ayam')
 
 @section('pageHeading')
-<h1 class="h3 mb-0 text-gray-800">Hasil Peramalan Produksi Telur Ayam</h1>
+<h1 class="h3 mb-0 text-gray-800">Hasil Peramalan Hasil Produksu Telur Ayam</h1>
 @endsection
 
 @section('sidebar')
@@ -23,7 +23,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="/dashboardAdmin">
+        <a class="nav-link" href="/dashboardowner">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -31,53 +31,19 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Nav Item - User -->
-    <li class="nav-item active">
-        <a class="nav-link" href="/user">
-            <i class="fas fa-fw fa-user"></i>
-            <span>User</span></a>
-    </li>
-
-    <!-- Nav Item - Kandang Ayam -->
-    <li class="nav-item active">
-        <a class="nav-link" href="/kandangAdmin">
-            <i class="fas fa-home"></i>
-            <span>Kandang Ayam</span></a>
-    </li>
-
-    <!-- Nav Item - Tahun Produksi Telur-->
-    <li class="nav-item active">
-        <a class="nav-link" href="/tahunProduksiAdmin">
-            <i class="fas fa-history"></i>
-            <span>Tahun Produksi Telur </span></a>
-    </li>
-
     <!-- Nav Item - Produksi Telur -->
     <li class="nav-item active">
-        <a class="nav-link" href="/produksiTelur">
+        <a class="nav-link" href="/produksiTelurowner">
             <i class="fas fa-chart-line"></i>
             <span>Produksi Telur</span></a>
     </li>
 
-    <!-- Nav Item - Peramalan -->
+    <!-- Nav Item - Laporan -->
     <li class="nav-item active">
-        <a class="nav-link" href="/peramalanAdmin">
-            <i class="fa fa-area-chart"></i>
-            <span>Generate Peramalan</span></a>
-    </li>
-
-    <li class="nav-item active">
-        <a class="nav-link" href="/result-view">
-            <i class="fa fa-book"></i>
+        <a class="nav-link" href="/hasilPeramalanowner">
+            <i class="fas fa-book"></i>
             <span>Hasil Peramalan</span></a>
     </li>
-
-    <!-- Nav Item - Laporan
-    <li class="nav-item active">
-        <a class="nav-link" href="/laporanAdmin">
-            <i class="fas fa-book"></i>
-            <span>Laporan</span></a>
-    </li> -->
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
@@ -111,7 +77,7 @@
 @endsection
 
 @section('row2')
-<form action="/getResult" method="post" class="d-flex flex-wrap ml-4">
+<form action="/getResult2" method="post" class="d-flex flex-wrap ml-4">
     @csrf
     <div class="col-md-7 mb-2">
         <label class="font-weight-bold" for="selectBulan">Inputkan jumlah bulan</label>
@@ -127,13 +93,12 @@
 </form>
 
 <!-- untuk menghapus data yang awal sebelumnya -->
-<form action="/clearResult" method="post" class="d-flex flex-wrap ml-4">
+<form action="/clearResult2" method="post" class="d-flex flex-wrap ml-4">
     @csrf
     <div class="col-lg-3 mb-2 mt-4">
         <button type="submit" class="btn btn-danger">Reset</button>
     </div>
 </form>
-
 @endsection
 
 @section('container')
@@ -170,5 +135,4 @@
         </div>
     </div>
 </div>
-
 @endsection

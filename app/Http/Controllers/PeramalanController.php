@@ -138,6 +138,56 @@ class PeramalanController extends Controller
         return view('result.index', compact('data'));
     }
 
+    // hasil peramalan pemilik
+    public function resultData2()
+    {
+        $data = Result::all();
+
+        return view('owner.result', compact('data'));
+    }
+
+    public function generateForecast2(Request $request)
+    {
+        $dataAt = Peramalan::orderBy('periode', 'desc')->pluck('a')->first();
+        $valueAt = doubleval($dataAt);
+
+        $dataBt = Peramalan::orderBy('periode', 'desc')->pluck('b')->first();
+        $valueBt = doubleval($dataBt);
+
+        $dataPeriod = Peramalan::orderBy('periode', 'desc')->pluck('periode')->first();
+        $valuePeriod = intval($dataPeriod);
+
+        $bulan = $request->input('bulan');
+
+        // Lakukan perulangan untuk menyimpan data
+        for ($i = 0; $i < $bulan; $i++) {
+            // Buat instance baru dari model Result
+            $result = new Result();
+
+            // Tetapkan nilai atribut sesuai dengan logika Anda
+            $result->periode = $valuePeriod + $i + 1; // Periode bertambah 1 setiap perulangan
+            $result->a = $valueAt; // Gunakan nilai dari Peramalan::latest()->pluck('a')->first()
+            $result->b = $valueBt; // Gunakan nilai dari Peramalan::latest()->pluck('b')->first()
+            $result->m = $i + 1; // Misalnya, Anda belum memiliki nilai untuk 'm', Anda dapat menyesuaikan ini
+            $result->ft = ($valueAt + $valueBt) * ($i + 1); // Misalnya, Anda belum memiliki nilai untuk 'ft', Anda dapat menyesuaikan ini
+
+            // Simpan instance ke dalam database
+            $result->save();
+        }
+
+        return redirect('/hasilPeramalanowner');
+    }
+
+    public function destroyResult2()
+    {
+        if (Result::count() <= 0) {
+            return redirect('/hasilPeramalanowner')->with('toast_info', 'Records sudah kosong!');
+        }
+
+        Result::truncate();
+
+        return redirect('/hasilPeramalanowner');
+    }
 
     public function generateForecast(Request $request)
     {

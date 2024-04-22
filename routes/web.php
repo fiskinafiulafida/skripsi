@@ -64,6 +64,10 @@ Route::post('/clear-records', [PeramalanController::class, 'destroy']);
 Route::get('/result-view', [PeramalanController::class, 'resultData']);
 Route::post('/getResult', [PeramalanController::class, 'generateForecast']);
 Route::post('/clearResult', [PeramalanController::class, 'destroyResult']);
+// peramalan pemilik 
+Route::get('/hasilPeramalanowner', [PeramalanController::class, 'resultData2']);
+Route::post('/getResult2', [PeramalanController::class, 'generateForecast2']);
+Route::post('/clearResult2', [PeramalanController::class, 'destroyResult2']);
 
 // Halaman Owner
 Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
