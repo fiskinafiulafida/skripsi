@@ -130,7 +130,7 @@
 <form action="/clearResult" method="post" class="d-flex flex-wrap ml-4">
     @csrf
     <div class="col-lg-3 mb-2 mt-4">
-        <button type="submit" class="btn btn-danger">Clear Records</button>
+        <button type="submit" class="btn btn-danger">Reset</button>
     </div>
 </form>
 
@@ -147,9 +147,9 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Periode</th>
+                        <!-- <th>Periode</th>
                         <th>at</th>
-                        <th>bt</th>
+                        <th>bt</th> -->
                         <th>m</th>
                         <th>ft</th>
                     </tr>
@@ -157,10 +157,10 @@
                 <tfoot>
                     @foreach ($data as $item)
                     <tr>
-                        <th>{{ $item->periode }}</th>
+                        <!-- <th>{{ $item->periode }}</th>
                         <th>{{ round($item->a)}}</th>
-                        <th>{{ round($item->b)}}</th>
-                        <th>{{ $item->m }}</th>
+                        <th>{{ round($item->b)}}</th> -->
+                        <th>Bulan Ke - {{ $item->m }}</th>
                         <th>{{ round($item->ft)}}</th>
                     </tr>
                     @endforeach

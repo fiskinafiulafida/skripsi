@@ -97,7 +97,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            <h6> A. Clear Records Terlebih dahulu sebelum melakukan perhitungan</h6>
+                            <h6> A. Reset Terlebih dahulu sebelum melakukan perhitungan</h6>
                             <h6> B. Pilih Data Kandang Ayam</h6>
                             <h6> C. Pilih Nilai Alpha</h6>
                         </div>
@@ -144,14 +144,14 @@
         @enderror
     </div>
     <div class="col-lg-3 mb-2 mt-4">
-        <button type="submit" class="btn btn-success">Proses Peramalan</button>
+        <button type="submit" class="btn btn-success">Proses Perhitungan</button>
     </div>
 </form>
 
 <form action="/clear-records" method="post" class="d-flex flex-wrap">
     @csrf
     <div class="col-lg-3 mb-2 mt-4">
-        <button type="submit" class="btn btn-danger">Clear Records</button>
+        <button type="submit" class="btn btn-danger">Reset</button>
     </div>
 </form>
 
