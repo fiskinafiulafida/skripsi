@@ -153,12 +153,12 @@
                     </tr>
                 </thead>
                 <tfoot>
-                    @foreach ($data as $item)
+                    <!-- @foreach ($data as $item) -->
                     <tr>
                         <th>Bulan Ke - {{ $item->m }}</th>
                         <th>{{ round($item->ft)}}</th>
                     </tr>
-                    @endforeach
+                    <!-- @endforeach -->
                 </tfoot>
             </table>
         </div>
@@ -168,7 +168,75 @@
                 <th>RMSE :</th>
             </center>
         </div>
+        <div class="col-lg-12 mb-4">
+            <div class="card-body">
+                <div id="chart"></div>
+            </div>
+        </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    let m = [];
+    let ft = [];
 
+    function generateChart(data) {
+        const tempDataValue = [];
+        const tempDataXaxis = [];
+
+        for (const iterator of data) {
+            tempDataValue.push(iterator.ft.toFixed());
+            tempDataXaxis.push(`Bulan ke-${iterator.m }`)
+        }
+
+        return {
+            value: tempDataValue,
+            xaxis: tempDataXaxis,
+        }
+    };
+    fetch("/filter")
+        .then((response) => response.json())
+
+        .then((data) => {
+            var grafikPeramalan = generateChart(data);
+
+
+            var options = {
+                series: [{
+                    name: "Desktops",
+                    data: grafikPeramalan.value
+                }],
+                chart: {
+                    height: 350,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight'
+                },
+                title: {
+                    text: 'Grafik Hasil Peramalan Produksi Telur Ayam',
+                    align: 'left'
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    categories: grafikPeramalan.xaxis,
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        }).catch((error) => console.error('Error fetching data:', error));
+    console.log("Test Data?", m);
+</script>
 @endsection

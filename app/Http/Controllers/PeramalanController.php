@@ -243,4 +243,10 @@ class PeramalanController extends Controller
 
         return redirect('/result-view');
     }
+
+    public function chart()
+    {
+        $data = Result::all();
+        return response()->json($data);
+    }
 }
