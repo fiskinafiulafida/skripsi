@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'Hasil Peramalan Hasil Produksu Telur Ayam')
+@section('title', 'Hasil Peramalan Hasil Produksi Telur Ayam')
 
 @section('pageHeading')
-<h1 class="h3 mb-0 text-gray-800">Hasil Peramalan Hasil Produksu Telur Ayam</h1>
+<h1 class="h3 mb-0 text-gray-800">Hasil Peramalan Hasil Produksi Telur Ayam</h1>
 @endsection
 
 @section('sidebar')
@@ -118,24 +118,18 @@
                     </tr>
                 </thead>
                 <tfoot>
-                    <!-- @foreach ($data as $item) -->
+                    @foreach ($data as $item)
                     <tr>
                         <th>Bulan Ke - {{ $item->m }}</th>
                         <th>{{ round($item->ft)}}</th>
                     </tr>
-                    <!-- @endforeach -->
+                    @endforeach
                 </tfoot>
             </table>
         </div>
         <div>
-            <!-- <center>
-                <th>MAPE :</th><br>
-                <th>RMSE :</th>
-            </center> -->
-            <div class="col-lg-12 mb-4">
-                <div class="card-body">
-                    <div id="chartpemilik"></div>
-                </div>
+            <div class="card-body">
+                <div id="grafikPemilik"></div>
             </div>
         </div>
     </div>
@@ -148,19 +142,24 @@
     function generateChart(data) {
         const tempDataValue = [];
         const tempDataXaxis = [];
+
         for (const iterator of data) {
             tempDataValue.push(iterator.ft.toFixed());
             tempDataXaxis.push(`Bulan ke-${iterator.m }`)
         }
+
         return {
             value: tempDataValue,
             xaxis: tempDataXaxis,
         }
     };
-    fetch("/filter")
+    fetch("/grafik")
         .then((response) => response.json())
+
         .then((data) => {
             var grafikPeramalan = generateChart(data);
+
+
             var options = {
                 series: [{
                     name: "Desktops",
@@ -193,7 +192,8 @@
                     categories: grafikPeramalan.xaxis,
                 }
             };
-            var chart = new ApexCharts(document.querySelector("#chartpemilik"), options);
+
+            var chart = new ApexCharts(document.querySelector("#grafikPemilik"), options);
             chart.render();
         }).catch((error) => console.error('Error fetching data:', error));
     console.log("Test Data?", m);

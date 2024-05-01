@@ -125,6 +125,7 @@ class PeramalanController extends Controller
 
             // Simpan nilai peramalan untuk index saat ini sebagai nilai sebelumnya untuk iterasi berikutnya
             $previousForecast = $forecast;
+            $previousForecast->mape = $previousForecast * 2;
         }
 
         // Tampilkan hasil peramalan
@@ -250,8 +251,7 @@ class PeramalanController extends Controller
         return response()->json($data);
     }
 
-    // grafik hasil peramalan pemilik
-    public function chartpemilik()
+    public function grafikPemilik()
     {
         $data = Result::all();
         return response()->json($data);
