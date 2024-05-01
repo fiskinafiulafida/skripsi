@@ -249,4 +249,11 @@ class PeramalanController extends Controller
         $data = Result::all();
         return response()->json($data);
     }
+
+    // grafik hasil peramalan pemilik
+    public function chartpemilik()
+    {
+        $data = Result::all();
+        return response()->json($data);
+    }
 }

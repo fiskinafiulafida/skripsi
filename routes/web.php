@@ -92,3 +92,4 @@ Route::post('/filterKandangOWner', [ProduksiController::class, 'filterKandangown
 
 // filter peramalan hasil produksi telur ayam admin
 Route::get('/filter', [PeramalanController::class, 'chart']);
+Route::get('/filter', [PeramalanController::class, 'chartpemilik']);
