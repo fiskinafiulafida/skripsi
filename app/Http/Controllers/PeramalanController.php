@@ -125,7 +125,6 @@ class PeramalanController extends Controller
 
             // Simpan nilai peramalan untuk index saat ini sebagai nilai sebelumnya untuk iterasi berikutnya
             $previousForecast = $forecast;
-            $previousForecast->mape = $previousForecast * 2;
         }
 
         // Tampilkan hasil peramalan

@@ -183,7 +183,7 @@
                         <th>{{ $item->periode }}</th>
                         <th>{{ $item->aktual }}</th>
                         <th>{{ round($item->a) }}</th>
-                        <th>{{round($item->b) }}</th>
+                        <th>{{ round($item->b) }}</th>
                         <th>{{ round($item->f) }}</th>
                     </tr>
                     @endforeach
@@ -205,5 +205,5 @@
         </div>
     </div>
 </div>
-
+</script>
 @endsection
