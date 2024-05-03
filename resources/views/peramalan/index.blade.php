@@ -180,11 +180,16 @@
                 <tfoot>
                     @foreach ($peramalan as $item)
                     <tr>
-                        <th>{{ $item->periode }}</th>
+                        <!-- <th>{{ $item->periode }}</th>
                         <th>{{ $item->aktual }}</th>
                         <th>{{ round($item->a) }}</th>
                         <th>{{ round($item->b) }}</th>
-                        <th>{{ round($item->f) }}</th>
+                        <th>{{ round($item->f) }}</th> -->
+                        <th>{{ number_format(($item->periode), 0, ',', '.') }}</th>
+                        <th>{{ number_format(($item->aktual), 0, ',', '.') }}</th>
+                        <th>{{ number_format(round($item->a), 0, ',', '.') }}</th>
+                        <th>{{ number_format(round($item->b), 0, ',', '.') }}</th>
+                        <th>{{ number_format(round($item->f), 0, ',', '.') }}</th>
                     </tr>
                     @endforeach
                 </tfoot>

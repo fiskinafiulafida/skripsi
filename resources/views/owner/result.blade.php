@@ -121,7 +121,8 @@
                     @foreach ($data as $item)
                     <tr>
                         <th>Bulan Ke - {{ $item->m }}</th>
-                        <th>{{ round($item->ft)}}</th>
+                        <!-- <th>{{ round($item->ft)}}</th> -->
+                        <th>{{ number_format(round($item->ft), 0, ',', '.') }}</th>
                     </tr>
                     @endforeach
                 </tfoot>

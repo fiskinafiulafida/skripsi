@@ -103,7 +103,8 @@
                         <td>{{ $produksi->kandang->nama_kandang}}</td>
                         <td>{{ $produksi->tahunProduksi->tahunProduksi }}</td>
                         <td>{{ $produksi->bulan }}</td>
-                        <td>{{ $produksi->jumlah }}</td>
+                        <!-- <td>{{ $produksi->jumlah }}</td> -->
+                        <th>{{ number_format(($produksi->jumlah), 0, ',', '.') }}</th>
                     </tr>
                     @empty
                     <div class="alert alert-danger">

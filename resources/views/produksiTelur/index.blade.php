@@ -140,7 +140,8 @@
                         <td>{{ $produksi->kandang->nama_kandang}}</td>
                         <td>{{ $produksi->tahunProduksi->tahunProduksi }}</td>
                         <td>{{ $produksi->bulan }}</td>
-                        <td>{{ $produksi->jumlah }}</td>
+                        <!-- <td>{{ $produksi->jumlah }}</td> -->
+                        <th>{{ number_format(($produksi->jumlah), 0, ',', '.') }}</th>
                         <td class="text-center">
                             <form onsubmit="return confirm('Apakah Anda Yakin Akan Menghapus Data ?');" action="{{ route('produksiTelur.destroy', $produksi->id) }}" method="POST">
                                 <a href="{{ route('produksiTelur.edit', $produksi->id) }}" class="btn btn-info btn-circle btn-lg"><i class="fas fa-info-circle"></i></a>
