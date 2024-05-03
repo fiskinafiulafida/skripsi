@@ -45,29 +45,56 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
 });
 
 // data kandang ayam
-Route::resource('/kandangAdmin', KandangController::class)->middleware('auth', 'checkrole:admin');
+// Route::resource('/kandangAdmin', KandangController::class)->middleware('auth', 'checkrole:admin');
+Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
+    Route::resource('/kandangAdmin', KandangController::class);
+});
 
 // data produksi telur ayam
-Route::resource('/produksiTelur', ProduksiController::class)->middleware('auth', 'checkrole:admin');
-Route::post('/filterKandang', [ProduksiController::class, 'filterKandang']);;
+// Route::resource('/produksiTelur', ProduksiController::class)->middleware('auth', 'checkrole:admin');
+// Route::post('/filterKandang', [ProduksiController::class, 'filterKandang']);;
+Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
+    Route::resource('/produksiTelur', ProduksiController::class);
+    Route::post('/filterKandang', [ProduksiController::class, 'filterKandang']);
+});
 
 // data user
-Route::resource('/user', UserController::class)->middleware('auth', 'checkrole:admin');
+// Route::resource('/user', UserController::class)->middleware('auth', 'checkrole:admin');
+Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
+    Route::resource('/user', UserController::class);
+});
 
 // data tahun produksi telur ayam
-Route::resource('/tahunProduksiAdmin', TahunProduksiController::class)->middleware('auth', 'checkrole:admin');
+// Route::resource('/tahunProduksiAdmin', TahunProduksiController::class)->middleware('auth', 'checkrole:admin');
+Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
+    Route::resource('/tahunProduksiAdmin', TahunProduksiController::class);
+});
 
 // peramalan produksi telur ayam
-Route::resource('/peramalanAdmin', PeramalanController::class)->middleware('auth', 'checkrole:admin');
-Route::post('/getData', [PeramalanController::class, 'forecast']);
-Route::post('/clear-records', [PeramalanController::class, 'destroy']);
-Route::get('/result-view', [PeramalanController::class, 'resultData']);
-Route::post('/getResult', [PeramalanController::class, 'generateForecast']);
-Route::post('/clearResult', [PeramalanController::class, 'destroyResult']);
+// Route::resource('/peramalanAdmin', PeramalanController::class)->middleware('auth', 'checkrole:admin');
+// Route::post('/getData', [PeramalanController::class, 'forecast']);
+// Route::post('/clear-records', [PeramalanController::class, 'destroy']);
+// Route::get('/result-view', [PeramalanController::class, 'resultData']);
+// Route::post('/getResult', [PeramalanController::class, 'generateForecast']);
+// Route::post('/clearResult', [PeramalanController::class, 'destroyResult']);
+Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
+    Route::resource('/peramalanAdmin', PeramalanController::class);
+    Route::post('/getData', [PeramalanController::class, 'forecast']);
+    Route::post('/clear-records', [PeramalanController::class, 'destroy']);
+    Route::get('/result-view', [PeramalanController::class, 'resultData']);
+    Route::post('/getResult', [PeramalanController::class, 'generateForecast']);
+    Route::post('/clearResult', [PeramalanController::class, 'destroyResult']);
+});
+
 // peramalan pemilik 
-Route::get('/hasilPeramalanowner', [PeramalanController::class, 'resultData2']);
-Route::post('/getResult2', [PeramalanController::class, 'generateForecast2']);
-Route::post('/clearResult2', [PeramalanController::class, 'destroyResult2']);
+// Route::get('/hasilPeramalanowner', [PeramalanController::class, 'resultData2']);
+// Route::post('/getResult2', [PeramalanController::class, 'generateForecast2']);
+// Route::post('/clearResult2', [PeramalanController::class, 'destroyResult2']);
+Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
+    Route::get('/hasilPeramalanowner', [PeramalanController::class, 'resultData2']);
+    Route::post('/getResult2', [PeramalanController::class, 'generateForecast2']);
+    Route::post('/clearResult2', [PeramalanController::class, 'destroyResult2']);
+});
 
 // Halaman Owner
 Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
@@ -75,22 +102,45 @@ Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
 });
 
 // Halaman Profile User
-Route::resource('/profile', ProfileController::class)->middleware('auth', 'checkrole:admin,owner');
+// Route::resource('/profile', ProfileController::class)->middleware('auth', 'checkrole:admin,owner');
+Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
+    Route::resource('/profile', ProfileController::class);
+});
 
 // Password
-Route::resource('/password', PasswordController::class)->middleware('auth');
-Route::post('/change-password', [App\Http\Controllers\PasswordController::class, 'update'])->name('update-password')->middleware('auth');
+// Route::resource('/password', PasswordController::class)->middleware('auth');
+// Route::post('/change-password', [App\Http\Controllers\PasswordController::class, 'update'])->name('update-password')->middleware('auth');
+Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
+    Route::resource('/password', PasswordController::class);
+    Route::post('/change-password', [App\Http\Controllers\PasswordController::class, 'update'])->name('update-password')->middleware('auth');
+});
 
 // filter halaman dashboard
-Route::get('/filterGrafik', [AdminController::class, 'getChartData']);
+// Route::get('/filterGrafik', [AdminController::class, 'getChartData']);
+Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
+    Route::get('/filterGrafik', [AdminController::class, 'getChartData']);
+});
 
 // filter halaman owner
-Route::get('/filterGrafikowner', [OwnerController::class, 'getChartData']);
+// Route::get('/filterGrafikowner', [OwnerController::class, 'getChartData']);
+Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
+    Route::get('/filterGrafik', [OwnerController::class, 'getChartData']);
+});
 // produksi telur owner
-Route::get('produksiTelurowner', [ProduksiController::class, 'getProduksiOwner']);
-Route::post('/filterKandangOWner', [ProduksiController::class, 'filterKandangowner']);
+// Route::get('produksiTelurowner', [ProduksiController::class, 'getProduksiOwner']);
+// Route::post('/filterKandangOWner', [ProduksiController::class, 'filterKandangowner']);
+Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
+    Route::get('produksiTelurowner', [ProduksiController::class, 'getProduksiOwner']);
+    Route::post('/filterKandangOWner', [ProduksiController::class, 'filterKandangowner']);
+});
 
 // filter peramalan hasil produksi telur ayam admin
-Route::get('/filter', [PeramalanController::class, 'chart']);
+// Route::get('/filter', [PeramalanController::class, 'chart']);
+Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
+    Route::get('/filter', [PeramalanController::class, 'chart']);
+});
 
-Route::get('/grafik', [PeramalanController::class, 'grafikPemilik']);
+// Route::get('/grafik', [PeramalanController::class, 'grafikPemilik']);
+Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
+    Route::get('/grafik', [PeramalanController::class, 'grafikPemilik']);
+});
