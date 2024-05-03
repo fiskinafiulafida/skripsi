@@ -192,6 +192,7 @@ formFilter.addEventListener("submit", function (event) {
 
   // Panggil fungsi untuk memperbarui grafik
   updateChart();
+  updateChartPemilik();
 });
 
 function updateChart() {
@@ -200,6 +201,38 @@ function updateChart() {
 
   // Tentukan URL rute secara langsung
   var url = "/filterGrafik?tahun=" + tahun + "&kandang=" + kandang;
+
+  // Kirim permintaan HTTP ke endpoint
+  fetch(url)
+    .then(function (response) {
+      return response.json(); // Mengonversi respons menjadi JSON
+    })
+    .then(function (data) {
+      // Tangani respons dari server
+
+      // Perbarui data di dalam grafik
+      myLineChart.data.labels = data.map(function (item) {
+        return item.bulan; // Ubah sesuai dengan nama kolom untuk label
+      });
+      myLineChart.data.datasets[0].data = data.map(function (item) {
+        return item.jumlah; // Ubah sesuai dengan nama kolom untuk nilai
+      });
+
+      // Perbarui grafik
+      myLineChart.update();
+    })
+    .catch(function (error) {
+      // Tangani kesalahan jika ada
+      console.log(error);
+    });
+}
+
+function updateChartPemilik() {
+  var kandang = document.getElementById("kandang").value;
+  var tahun = document.getElementById("tahun").value;
+
+  // Tentukan URL rute secara langsung
+  var url = "/filterGrafikowner?tahun=" + tahun + "&kandang=" + kandang;
 
   // Kirim permintaan HTTP ke endpoint
   fetch(url)

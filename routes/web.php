@@ -124,7 +124,7 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
 // filter halaman owner
 // Route::get('/filterGrafikowner', [OwnerController::class, 'getChartData']);
 Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
-    Route::get('/filterGrafik', [OwnerController::class, 'getChartData']);
+    Route::get('/filterGrafikowner', [OwnerController::class, 'getChartData']);
 });
 // produksi telur owner
 // Route::get('produksiTelurowner', [ProduksiController::class, 'getProduksiOwner']);
