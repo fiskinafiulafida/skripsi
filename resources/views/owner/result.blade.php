@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.pemilik')
 
 @section('title', 'Hasil Peramalan Hasil Produksi Telur Ayam')
 

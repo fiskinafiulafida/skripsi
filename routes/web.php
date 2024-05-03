@@ -12,6 +12,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TahunProduksiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ProfController;
+use App\Http\Controllers\PassController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -143,4 +145,13 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function () {
 // Route::get('/grafik', [PeramalanController::class, 'grafikPemilik']);
 Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
     Route::get('/grafik', [PeramalanController::class, 'grafikPemilik']);
+});
+
+Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
+    Route::resource('/profilePemilik', ProfController::class);
+});
+
+Route::group(['middleware' => ['auth', 'checkrole:owner']], function () {
+    Route::resource('/passwordPemilik', PassController::class);
+    Route::post('/change-password', [App\Http\Controllers\PassController::class, 'update'])->name('update-password')->middleware('auth');
 });
