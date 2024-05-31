@@ -212,7 +212,7 @@ class PeramalanController extends Controller
             $result->a = $valueAt; // Gunakan nilai dari Peramalan::latest()->pluck('a')->first()
             $result->b = $valueBt; // Gunakan nilai dari Peramalan::latest()->pluck('b')->first()
             $result->m = $i + 1; // Misalnya, Anda belum memiliki nilai untuk 'm', Anda dapat menyesuaikan ini
-            $result->ft = ($valueAt + $valueBt) * ($i + 1); // Misalnya, Anda belum memiliki nilai untuk 'ft', Anda dapat menyesuaikan ini
+            $result->ft = $valueAt + ($valueBt * ($i + 1)); // Misalnya, Anda belum memiliki nilai untuk 'ft', Anda dapat menyesuaikan ini
 
             // Simpan instance ke dalam database
             $result->save();

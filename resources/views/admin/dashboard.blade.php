@@ -91,6 +91,7 @@
 
 @section('row1')
 <!-- Earnings (Monthly) Card Example -->
+<!-- <img class="img-profile rounded-circle" src="{{ asset('Admin/img/undraw_profile.svg')}}"> -->
 <div class="col-lg-4 mb-3">
     <div class="card border-left-primary shadow h-100 py-2">
         <div class="card-body">
