@@ -93,18 +93,16 @@
 <div class="col-lg-4 mb-3">
     <div class="card border-left-primary shadow h-100 py-2">
         <div class="card-body">
-            <a href="user">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            <h6> A. Reset Terlebih dahulu sebelum melakukan perhitungan</h6>
-                            <h6> B. Pilih Data Kandang Ayam</h6>
-                            <h6> C. Pilih Nilai Alpha</h6>
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <h6> A. Reset Terlebih dahulu sebelum melakukan perhitungan</h6>
+                        <h6> B. Pilih Data Kandang Ayam</h6>
+                        <h6> C. Pilih Nilai Alpha</h6>
                     </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@
 @section('title', 'Create Data Tahun Produksi Telur Ayam')
 
 @section('pageHeading')
-<h1 class="h3 mb-0 text-gray-800">Create Data Kandang Ayam</h1>
+<h1 class="h3 mb-0 text-gray-800">Create Data Tahun Produksi Telur Ayam</h1>
 @endsection
 
 @section('sidebar')

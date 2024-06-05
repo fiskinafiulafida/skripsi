@@ -59,18 +59,16 @@
 <div class="col-lg-4 mb-3">
     <div class="card border-left-primary shadow h-100 py-2">
         <div class="card-body">
-            <a href="user">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            <h6> 1. Clear Record Terlebih Dahulu Sebelum Melakukan Peramalan</h6>
-                            <h6> 2. Masukkan Jumlah Bulan yang Akan di Ramalkan</h6>
-                            <h6> 3. Klik Proses Peramalan</h6>
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <h6> 1. Reset Terlebih Dahulu Sebelum Melakukan Peramalan</h6>
+                        <h6> 2. Pilih Bulan yang Akan di Ramalkan</h6>
+                        <h6> 3. Klik Proses Peramalan</h6>
                     </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
 </div>
@@ -80,18 +78,22 @@
 <form action="/getResult2" method="post" class="d-flex flex-wrap ml-4">
     @csrf
     <div class="col-md-7 mb-2">
-        <label class="font-weight-bold" for="selectBulan">Inputkan jumlah bulan</label>
-        <input type="number" name="bulan" class="form-control" style="width: 200px;">
+        <label class="font-weight-bold" for="selectBulan">Pilih Bulan</label>
+        <select name="bulan" id="selectBulan" class="form-control" style="width: 200px;">
+            @foreach ($availableMonths as $month)
+            <option value="{{ $month['value'] }}" {{ $month['disabled'] ? 'disabled' : '' }} class=" {{ $month['disabled'] ? 'bg-dark' : '' }}">
+                {{ $month['name'] }}
+            </option>
+            @endforeach
+        </select>
         @error('bulan')
-        <div class=" invalid-feedback">{{ $message }}
-        </div>
+        <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
     <div class="col-lg-3 mb-4 mt-4">
         <button type="submit" class="btn btn-success">Proses Peramalan</button>
     </div>
 </form>
-
 <!-- untuk menghapus data yang awal sebelumnya -->
 <form action="/clearResult2" method="post" class="d-flex flex-wrap ml-4">
     @csrf
@@ -103,57 +105,70 @@
 
 @section('container')
 <!-- DataTales Example -->
+<!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Hasil Data Peramalan Produksi Telur Ayam</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <!-- <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"> -->
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Bulan yang ke - </th>
+                        <th>Bulan</th>
                         <th>Hasil Prediksi</th>
                     </tr>
                 </thead>
                 <tfoot>
                     @foreach ($data as $item)
+                    @php
+                    $monthIndex = ($latestMonthIndex + $item->m) % 12;
+                    $month = $months[$monthIndex];
+                    $year = $latestYear + floor(($latestMonthIndex + $item->m) / 12);
+                    @endphp
                     <tr>
-                        <th>Bulan Ke - {{ $item->m }}</th>
-                        <!-- <th>{{ round($item->ft)}}</th> -->
+                        <th>{{ $month }} {{ $year }}</th>
                         <th>{{ number_format(round($item->ft), 0, ',', '.') }}</th>
                     </tr>
                     @endforeach
                 </tfoot>
             </table>
         </div>
-        <div>
+        <div class="col-lg-12 mb-4">
             <div class="card-body">
-                <div id="grafikPemilik"></div>
+                <div id="chart"></div>
             </div>
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     let m = [];
     let ft = [];
+
+    const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    const latestMonthIndex = {{ $latestMonthIndex }};
+    const latestYear = {{ $latestYear }};
 
     function generateChart(data) {
         const tempDataValue = [];
         const tempDataXaxis = [];
 
         for (const iterator of data) {
-            tempDataValue.push(iterator.ft.toFixed());
-            tempDataXaxis.push(`Bulan ke-${iterator.m }`)
+            tempDataValue.push(Number(iterator.ft).toFixed());
+            let monthIndex = Number(latestMonthIndex) + Number(iterator.m);
+            let year = latestYear + Math.floor((Number(latestMonthIndex) + Number(iterator.m)) / 12);
+            let month = months[monthIndex];
+            tempDataXaxis.push(`${month} ${year}`);
         }
 
         return {
             value: tempDataValue,
             xaxis: tempDataXaxis,
-        }
+        };
     };
+
     fetch("/grafik")
         .then((response) => response.json())
 
@@ -163,7 +178,7 @@
 
             var options = {
                 series: [{
-                    name: "Desktops",
+                    name: "Hasil Prediksi",
                     data: grafikPeramalan.value
                 }],
                 chart: {
@@ -185,7 +200,7 @@
                 },
                 grid: {
                     row: {
-                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        colors: ['#f3f3f3', 'transparent'],
                         opacity: 0.5
                     },
                 },
@@ -194,9 +209,10 @@
                 }
             };
 
-            var chart = new ApexCharts(document.querySelector("#grafikPemilik"), options);
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
             chart.render();
         }).catch((error) => console.error('Error fetching data:', error));
     console.log("Test Data?", m);
 </script>
+
 @endsection

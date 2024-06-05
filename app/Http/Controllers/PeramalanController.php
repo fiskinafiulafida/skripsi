@@ -11,6 +11,8 @@ use App\Models\Result;
 use App\Models\TahunProduksi;
 use DB;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use Carbon\Carbon;
+
 
 class PeramalanController extends Controller
 {
@@ -130,48 +132,141 @@ class PeramalanController extends Controller
         // Tampilkan hasil peramalan
         return redirect('/peramalanAdmin')->withInput();
     }
-
-    public function resultData()
-    {
-        $data = Result::all();
-
-        return view('result.index', compact('data'));
-    }
-
     // hasil peramalan pemilik
+    // public function resultData2()
+    // {
+    //     $data = Result::all();
+
+    //     return view('owner.result', compact('data'));
+    // }
+
     public function resultData2()
     {
         $data = Result::all();
 
-        return view('owner.result', compact('data'));
+        $produksiData = Produksi::whereHas('kandang', function ($query) {
+            $query->where('id', 1);
+        })
+            ->oldest()
+            ->with('tahunProduksi')
+            ->get();
+        $firstProduksi = $produksiData->first();
+        $firstMonth = $firstProduksi->bulan;
+        $firstYear = $firstProduksi->tahunProduksi->tahunProduksi;
+
+        $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $firstMonthIndex = array_search($firstMonth, $months);
+        $totalForecastMonths = 24;
+        $totalData = count($produksiData);
+        $remainingMonths = $totalForecastMonths - $totalData;
+        $latestMonthIndex = ($firstMonthIndex + $totalData - 1) % 12;
+        $latestYear = $firstYear + floor(($firstMonthIndex + $totalData - 1) / 12);
+
+        $availableMonths = [];
+        $monthNewStart = 1;
+        for ($i = 0; $i < $totalForecastMonths; $i++) {
+            $monthIndex = ($firstMonthIndex + $i) % 12;
+            $month = $months[$monthIndex];
+            $year = $firstYear + floor(($firstMonthIndex + $i) / 12);
+
+
+            $isInForecast = false;
+            foreach ($data as $item) {
+                $forecastMonthIndex = ($latestMonthIndex + $item->m) % 12; // Corrected line
+                if ($monthIndex == ($forecastMonthIndex % 12)) { // Corrected line
+                    $isInForecast = true;
+                    break;
+                }
+            }
+
+            if ($isInForecast) {
+                $value = 0;
+                $disabled = true;
+            } else {
+                $disabled = $i < $totalData;
+            }
+
+            $value = $i >= $totalData ? $monthNewStart++ : 0;
+
+            $availableMonths[] = [
+                'value' => $value,
+                'name' => "$month $year",
+                'disabled' => $disabled
+            ];
+        }
+
+        return view('owner.result', compact('data', 'availableMonths', 'latestMonthIndex', 'latestYear', 'months', 'remainingMonths'));
     }
 
+
+    // public function generateForecast2(Request $request)
+    // {
+    //     $dataAt = Peramalan::orderBy('periode', 'desc')->pluck('a')->first();
+    //     $valueAt = doubleval($dataAt);
+
+    //     $dataBt = Peramalan::orderBy('periode', 'desc')->pluck('b')->first();
+    //     $valueBt = doubleval($dataBt);
+
+    //     $dataPeriod = Peramalan::orderBy('periode', 'desc')->pluck('periode')->first();
+    //     $valuePeriod = intval($dataPeriod);
+
+    //     $bulan = $request->input('bulan');
+
+    //     // Lakukan perulangan untuk menyimpan data
+    //     for ($i = 0; $i < $bulan; $i++) {
+    //         // Buat instance baru dari model Result
+    //         $result = new Result();
+
+    //         // Tetapkan nilai atribut sesuai dengan logika Anda
+    //         $result->periode = $valuePeriod + $i + 1; // Periode bertambah 1 setiap perulangan
+    //         $result->a = $valueAt; // Gunakan nilai dari Peramalan::latest()->pluck('a')->first()
+    //         $result->b = $valueBt; // Gunakan nilai dari Peramalan::latest()->pluck('b')->first()
+    //         $result->m = $i + 1; // Misalnya, Anda belum memiliki nilai untuk 'm', Anda dapat menyesuaikan ini
+    //         $result->ft = ($valueAt + $valueBt) * ($i + 1); // Misalnya, Anda belum memiliki nilai untuk 'ft', Anda dapat menyesuaikan ini
+
+    //         // Simpan instance ke dalam database
+    //         $result->save();
+    //     }
+
+    //     return redirect('/hasilPeramalanowner');
+    // }
     public function generateForecast2(Request $request)
     {
+        if (Result::count() > 0) {
+            Result::truncate();
+        }
+
         $dataAt = Peramalan::orderBy('periode', 'desc')->pluck('a')->first();
         $valueAt = doubleval($dataAt);
 
         $dataBt = Peramalan::orderBy('periode', 'desc')->pluck('b')->first();
         $valueBt = doubleval($dataBt);
 
-        $dataPeriod = Peramalan::orderBy('periode', 'desc')->pluck('periode')->first();
-        $valuePeriod = intval($dataPeriod);
+        $latestResult = Result::orderBy('periode', 'desc')->first();
+        $valuePeriod = $latestResult ? $latestResult->periode : 0;
 
-        $bulan = $request->input('bulan');
+        $forecastCount = Result::count();
+        if ($forecastCount >= 24) {
+            return redirect('/result-view')->with('error', 'Maximum forecasting periods reached.');
+        }
 
-        // Lakukan perulangan untuk menyimpan data
+        $bulan = intval($request->input('bulan'));
+
+        if (($forecastCount + $bulan) > 24) {
+            $bulan = 24 - $forecastCount;
+        }
+
+        $latestMonth = $latestResult ? $latestResult->m : 0;
+
+        $valuePeriod = $latestMonth ? $latestMonth + 1 : 1;
+
         for ($i = 0; $i < $bulan; $i++) {
-            // Buat instance baru dari model Result
             $result = new Result();
-
-            // Tetapkan nilai atribut sesuai dengan logika Anda
-            $result->periode = $valuePeriod + $i + 1; // Periode bertambah 1 setiap perulangan
-            $result->a = $valueAt; // Gunakan nilai dari Peramalan::latest()->pluck('a')->first()
-            $result->b = $valueBt; // Gunakan nilai dari Peramalan::latest()->pluck('b')->first()
-            $result->m = $i + 1; // Misalnya, Anda belum memiliki nilai untuk 'm', Anda dapat menyesuaikan ini
-            $result->ft = ($valueAt + $valueBt) * ($i + 1); // Misalnya, Anda belum memiliki nilai untuk 'ft', Anda dapat menyesuaikan ini
-
-            // Simpan instance ke dalam database
+            $result->periode = $valuePeriod + $i;
+            $result->a = $valueAt;
+            $result->b = $valueBt;
+            $result->m = $valuePeriod + $i;
+            $result->ft = $valueAt + ($valueBt * ($i + 1));
             $result->save();
         }
 
@@ -189,32 +284,102 @@ class PeramalanController extends Controller
         return redirect('/hasilPeramalanowner');
     }
 
+    public function resultData()
+    {
+        $data = Result::all();
+
+        $produksiData = Produksi::whereHas('kandang', function ($query) {
+            $query->where('id', 1);
+        })
+            ->oldest()
+            ->with('tahunProduksi')
+            ->get();
+        $firstProduksi = $produksiData->first();
+        $firstMonth = $firstProduksi->bulan;
+        $firstYear = $firstProduksi->tahunProduksi->tahunProduksi;
+
+        $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $firstMonthIndex = array_search($firstMonth, $months);
+        $totalForecastMonths = 24;
+        $totalData = count($produksiData);
+        $remainingMonths = $totalForecastMonths - $totalData;
+        $latestMonthIndex = ($firstMonthIndex + $totalData - 1) % 12;
+        $latestYear = $firstYear + floor(($firstMonthIndex + $totalData - 1) / 12);
+
+        $availableMonths = [];
+        $monthNewStart = 1;
+        for ($i = 0; $i < $totalForecastMonths; $i++) {
+            $monthIndex = ($firstMonthIndex + $i) % 12;
+            $month = $months[$monthIndex];
+            $year = $firstYear + floor(($firstMonthIndex + $i) / 12);
+
+
+            $isInForecast = false;
+            foreach ($data as $item) {
+                $forecastMonthIndex = ($latestMonthIndex + $item->m) % 12; // Corrected line
+                if ($monthIndex == ($forecastMonthIndex % 12)) { // Corrected line
+                    $isInForecast = true;
+                    break;
+                }
+            }
+
+            if ($isInForecast) {
+                $value = 0;
+                $disabled = true;
+            } else {
+                $disabled = $i < $totalData;
+            }
+
+            $value = $i >= $totalData ? $monthNewStart++ : 0;
+
+            $availableMonths[] = [
+                'value' => $value,
+                'name' => "$month $year",
+                'disabled' => $disabled
+            ];
+        }
+
+        return view('result.index', compact('data', 'availableMonths', 'latestMonthIndex', 'latestYear', 'months', 'remainingMonths'));
+    }
+
+
     public function generateForecast(Request $request)
     {
+        if (Result::count() > 0) {
+            Result::truncate();
+        }
+
         $dataAt = Peramalan::orderBy('periode', 'desc')->pluck('a')->first();
         $valueAt = doubleval($dataAt);
 
         $dataBt = Peramalan::orderBy('periode', 'desc')->pluck('b')->first();
         $valueBt = doubleval($dataBt);
 
-        $dataPeriod = Peramalan::orderBy('periode', 'desc')->pluck('periode')->first();
-        $valuePeriod = intval($dataPeriod);
+        $latestResult = Result::orderBy('periode', 'desc')->first();
+        $valuePeriod = $latestResult ? $latestResult->periode : 0;
 
-        $bulan = $request->input('bulan');
+        $forecastCount = Result::count();
+        if ($forecastCount >= 24) {
+            return redirect('/result-view')->with('error', 'Maximum forecasting periods reached.');
+        }
 
-        // Lakukan perulangan untuk menyimpan data
+        $bulan = intval($request->input('bulan'));
+
+        if (($forecastCount + $bulan) > 24) {
+            $bulan = 24 - $forecastCount;
+        }
+
+        $latestMonth = $latestResult ? $latestResult->m : 0;
+
+        $valuePeriod = $latestMonth ? $latestMonth + 1 : 1;
+
         for ($i = 0; $i < $bulan; $i++) {
-            // Buat instance baru dari model Result
             $result = new Result();
-
-            // Tetapkan nilai atribut sesuai dengan logika Anda
-            $result->periode = $valuePeriod + $i + 1; // Periode bertambah 1 setiap perulangan
-            $result->a = $valueAt; // Gunakan nilai dari Peramalan::latest()->pluck('a')->first()
-            $result->b = $valueBt; // Gunakan nilai dari Peramalan::latest()->pluck('b')->first()
-            $result->m = $i + 1; // Misalnya, Anda belum memiliki nilai untuk 'm', Anda dapat menyesuaikan ini
-            $result->ft = $valueAt + ($valueBt * ($i + 1)); // Misalnya, Anda belum memiliki nilai untuk 'ft', Anda dapat menyesuaikan ini
-
-            // Simpan instance ke dalam database
+            $result->periode = $valuePeriod + $i;
+            $result->a = $valueAt;
+            $result->b = $valueBt;
+            $result->m = $valuePeriod + $i;
+            $result->ft = $valueAt + ($valueBt * ($i + 1));
             $result->save();
         }
 

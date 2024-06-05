@@ -17,7 +17,7 @@ class AdminController extends Controller
         $user = DB::table('users')->count();
         $tahun = DB::table('tahun_produksi')->count();
         $kandang = DB::table('kandang')->count();
-        return view('Admin.dashboard', compact('user', 'tahun', 'kandang', 'tahunProduksi', 'kandangAyam'));
+        return view('admin.dashboard', compact('user', 'tahun', 'kandang', 'tahunProduksi', 'kandangAyam'));
     }
 
     public function getChartData(Request $request)
